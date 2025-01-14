@@ -140,7 +140,7 @@ init();
    ![login](img-read-me/Capturar2.PNG)
   
 4. Clique no botão 'Verificar não Seguidores', os usuários que não seguem de volta serão listados. 
-ps: Se desejar deixar de seguir algum usuário será necessário copiar o username e o procurar na sua lista usando Ctrl+F.
+ps: Se desejar deixar de seguir algum usuário será necessário copiar o username, inserir no final da URL https://github.com/ e clicar em unfollow.
 
 ## **🙋‍♀️ Responsabilidade de uso é inteiramente do usuário**: Esse código não é afiliado, associado, autorizado, endossado ou de qualquer forma oficialmente conectado ao Github.
   
