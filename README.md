@@ -24,40 +24,63 @@ Projeto de Thaise Oliveira. Com base no repositório do @herbertcarnaubadesouza 
 "use strict";
 
 const GITHUB_API_URL = "https://api.github.com/users/";
-let nonFollowersList = [],
-    followingList = [],
-    isActiveProcess = false;
+
+let nonFollowersList = [];
+let isActiveProcess = false;
 
 function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function getFollowers(username) {
-    const response = await fetch(`${GITHUB_API_URL}${username}/followers`);
-    if (!response.ok) {
-        throw new Error('Error fetching followers: ' + response.statusText);
+// Fetch followers with pagination
+async function getAllFollowers(username) {
+    let followers = [];
+    let page = 1;
+
+    while (true) {
+        const response = await fetch(`${GITHUB_API_URL}${username}/followers?per_page=100&page=${page}`);
+        if (!response.ok) {
+            throw new Error('Error fetching followers: ' + response.statusText);
+        }
+        const data = await response.json();
+        if (data.length === 0) break; // Se nenhum dado, sai do loop
+        followers = followers.concat(data);
+        page++;
     }
-    return await response.json();
+
+    return followers;
 }
 
-async function getFollowing(username) {
-    const response = await fetch(`${GITHUB_API_URL}${username}/following`);
-    if (!response.ok) {
-        throw new Error('Error fetching following: ' + response.statusText);
+// Fetch following with pagination
+async function getAllFollowing(username) {
+    let following = [];
+    let page = 1;
+
+    while (true) {
+        const response = await fetch(`${GITHUB_API_URL}${username}/following?per_page=100&page=${page}`);
+        if (!response.ok) {
+            throw new Error('Error fetching following: ' + response.statusText);
+        }
+        const data = await response.json();
+        if (data.length === 0) break; // Se nenhum dado, sai do loop
+        following = following.concat(data);
+        page++;
     }
-    return await response.json();
+
+    return following;
 }
 
 async function findNonFollowers(username) {
     if (isActiveProcess) return;
+    
     isActiveProcess = true;
     showLoading(true);
-    document.querySelector('.error-message').innerText = '';  // Alterado de doc para document
+    document.querySelector('.error-message').innerText = '';
 
     try {
-        const followers = await getFollowers(username);
-        const following = await getFollowing(username);
-        
+        const followers = await getAllFollowers(username);
+        const following = await getAllFollowing(username);
+
         const followerSet = new Set(followers.map(user => user.login));
         nonFollowersList = following.map(user => user.login).filter(user => !followerSet.has(user));
 
@@ -71,7 +94,6 @@ async function findNonFollowers(username) {
     }
 }
 
-
 function renderResults(nonFollowers) {
     const resultsContainer = document.querySelector(".results-container");
     resultsContainer.innerHTML = ""; // Limpa resultados anteriores
@@ -83,6 +105,7 @@ function renderResults(nonFollowers) {
             resultsContainer.innerHTML += `<div>${user}</div>`;
         });
     }
+
     document.querySelector(".nonfollower-count").textContent = `Não seguidores: ${nonFollowers.length}`;
 }
 
@@ -113,12 +136,10 @@ function renderOverlay(username) {
         </main>
     `;
 
-    // Adicionando o listener de evento aqui
     document.getElementById('check-followers-btn').addEventListener('click', () => {
         findNonFollowers(username);
     });
 }
-
 
 function init() {
     const username = prompt("Digite seu nome de usuário do GitHub:");
@@ -130,6 +151,7 @@ function init() {
 }
 
 init();
+
 ```
 2. Faça login em sua conta e abra o console do desenvolvedor ou (Ctrl+Shift+J(Windows) || ⌘+⌥+I (Mac os)) e cole o código. Ele pedirá seu nome de usuário:
   
