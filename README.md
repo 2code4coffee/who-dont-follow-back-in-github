@@ -15,7 +15,7 @@ Criação de uma lista com usuários que não te segue nessa rede.
 
 - ## **👥 Equipe**
 
-Projeto de Thaise Oliveira. Com base no repositório do @herbertcarnaubadesouza de descobrir não seguidores no Instagram https://github.com/herbertcarnaubadesouza/who-dont-follows-u
+Projeto de Thaise Oliveira. Com base no repositório do [herbertcarnaubadesouza](https://github.com/herbertcarnaubadesouza/who-dont-follows-u) de descobrir não seguidores no Instagram 
 
 
 - ## **👩‍💻Como usar:** 
